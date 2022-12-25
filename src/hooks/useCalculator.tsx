@@ -1,5 +1,6 @@
 import {useState} from 'react';
 
+// handler calc depend the type of calc and return value
 const calcResult = (val1: number, val2: number, calc: string) => {
   let getResult: number;
   switch (calc) {
@@ -31,9 +32,8 @@ export default function useCalculator() {
   const [operationValues, setOperationValues] = useState<Array<number>>([]);
   const [result, setResult] = useState<string>('');
 
+  // calc type handler
   const handleCalcType = (matchType: string) => {
-    console.log(operationValues);
-
     setInputNumber('0');
     setCalcType(matchType);
     if (calcType === '' && operationValues.length === 0) {
@@ -41,7 +41,7 @@ export default function useCalculator() {
       currentOpVal.push(Number(inputNumber));
       setOperationValues(currentOpVal);
       setResult(operationValues[0].toString());
-    }
+    } // for the first input, allowed to only store one value in the array even touch many times the symbols btn
 
     if (operationValues.length >= 1 && calcType !== '' && inputNumber !== '0') {
       console.log('effect');
@@ -53,7 +53,7 @@ export default function useCalculator() {
         operationValues[1],
         calcType,
       );
-
+      // if we already put the first value to calc it allowed to calc afther trigger again a symbol btn
       const operationValFromResult = [operationResult];
       setOperationValues(operationValFromResult);
       setResult(operationResult.toString());
@@ -67,7 +67,7 @@ export default function useCalculator() {
       operationValues[0],
       operationValues[1],
       calcType,
-    );
+    ); //get the result when trigger = btn
 
     const operationValFromResult = [operationResult];
     setOperationValues(operationValFromResult);
@@ -82,11 +82,10 @@ export default function useCalculator() {
     const actualValue = `${inputNumber.toString()}${value}`;
     console.log(`${inputNumber.toString()}${value}`);
     setInputNumber(actualValue);
-  };
+  }; // put values we trigger
 
   const changePositiveNegative = () => {
     let actualInput = inputNumber;
-    console.log(actualInput.replace('-', ''));
     if (actualInput.startsWith('-')) {
       console.log('entre');
       actualInput = actualInput.replace('-', '');
