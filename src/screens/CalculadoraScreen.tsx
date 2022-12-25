@@ -1,31 +1,53 @@
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, View} from 'react-native';
 import CalculadoraBtn from '../components/CalculadoraBtn';
 import Spacer from '../components/Spacer';
 import useCalculator from '../hooks/useCalculator';
 import styles from '../theme/appTheme';
 export default function CalculadoraScreen() {
-  const {handlerInputNumber, inputNumber, deleteNumbers} = useCalculator();
-  console.log(inputNumber);
+  const {
+    handlerInputNumber,
+    inputNumber,
+    deleteNumbers,
+    handleCalcType,
+    result,
+    equalBtn,
+    changePositiveNegative,
+    convertToPorcent,
+  } = useCalculator();
+
   return (
     <View style={styles.calculadoraContainer}>
-      <Text style={styles.textoResultado}>1,500.00</Text>
-      <Text style={styles.texto}>{inputNumber}</Text>
+      <Text style={styles.textoResultado}>{result}</Text>
+      <Text style={styles.texto}>
+        {Number(inputNumber).toLocaleString(undefined, {
+          maximumFractionDigits: 2,
+        })}
+      </Text>
+
       <Spacer />
       <View style={styles.rowBtn}>
         <CalculadoraBtn
           handler={() => deleteNumbers()}
           color="black"
           bgColor="#9C9B9C">
-          AC
+          {Number(inputNumber) > 0 ? 'AC' : 'C'}
         </CalculadoraBtn>
-        <CalculadoraBtn color="black" bgColor="#9C9B9C">
+        <CalculadoraBtn
+          handler={changePositiveNegative}
+          color="black"
+          bgColor="#9C9B9C">
           +/-
         </CalculadoraBtn>
-        <CalculadoraBtn color="black" bgColor="#9C9B9C">
+        <CalculadoraBtn
+          handler={convertToPorcent}
+          color="black"
+          bgColor="#9C9B9C">
           %
         </CalculadoraBtn>
-        <CalculadoraBtn bgColor="#F9940B">&#xf7;</CalculadoraBtn>
+        <CalculadoraBtn handler={() => handleCalcType('/')} bgColor="#F9940B">
+          &#xf7;
+        </CalculadoraBtn>
       </View>
       <Spacer column={5} />
       <View style={styles.rowBtn}>
@@ -38,7 +60,9 @@ export default function CalculadoraScreen() {
         <CalculadoraBtn handler={() => handlerInputNumber('9')}>
           9
         </CalculadoraBtn>
-        <CalculadoraBtn bgColor="#F9940B">X</CalculadoraBtn>
+        <CalculadoraBtn handler={() => handleCalcType('x')} bgColor="#F9940B">
+          X
+        </CalculadoraBtn>
       </View>
       <Spacer column={5} />
       <View style={styles.rowBtn}>
@@ -51,7 +75,9 @@ export default function CalculadoraScreen() {
         <CalculadoraBtn handler={() => handlerInputNumber('6')}>
           6
         </CalculadoraBtn>
-        <CalculadoraBtn bgColor="#F9940B">-</CalculadoraBtn>
+        <CalculadoraBtn handler={() => handleCalcType('-')} bgColor="#F9940B">
+          -
+        </CalculadoraBtn>
       </View>
       <Spacer column={5} />
       <View style={styles.rowBtn}>
@@ -64,7 +90,9 @@ export default function CalculadoraScreen() {
         <CalculadoraBtn handler={() => handlerInputNumber('3')}>
           3
         </CalculadoraBtn>
-        <CalculadoraBtn bgColor="#F9940B">+</CalculadoraBtn>
+        <CalculadoraBtn handler={() => handleCalcType('+')} bgColor="#F9940B">
+          +
+        </CalculadoraBtn>
       </View>
       <Spacer column={5} />
       <View style={styles.rowBtn}>
@@ -76,7 +104,9 @@ export default function CalculadoraScreen() {
         <CalculadoraBtn handler={() => handlerInputNumber('.')}>
           .
         </CalculadoraBtn>
-        <CalculadoraBtn bgColor="#F9940B">=</CalculadoraBtn>
+        <CalculadoraBtn handler={() => equalBtn()} bgColor="#F9940B">
+          =
+        </CalculadoraBtn>
       </View>
     </View>
   );
